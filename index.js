@@ -1,7 +1,7 @@
 'use strict';
 
 function _extends() {
-  _extends = Object.assign || function(target) {
+  _extends = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
       for (var key in source) {
@@ -29,23 +29,23 @@ function _typeof(obj) {
   return _typeof(obj);
 }
 
-var __extends = void 0 && (void 0).__extends || function() {
+var __extends = void 0 && (void 0).__extends || function () {
   var _extendStatics = function extendStatics(d, b) {
     _extendStatics = Object.setPrototypeOf || {
       __proto__: []
     }
-    instanceof Array && function(d, b) {
-      d.__proto__ = b;
-    } || function(d, b) {
-      for (var p in b) {
-        if (b.hasOwnProperty(p)) d[p] = b[p];
-      }
-    };
+      instanceof Array && function (d, b) {
+        d.__proto__ = b;
+      } || function (d, b) {
+        for (var p in b) {
+          if (b.hasOwnProperty(p)) d[p] = b[p];
+        }
+      };
 
     return _extendStatics(d, b);
   };
 
-  return function(d, b) {
+  return function (d, b) {
     _extendStatics(d, b);
 
     function __() {
@@ -69,17 +69,17 @@ if (!SERVER_RENDERED) {
   cm = require('codemirror');
 }
 
-var Helper = function() {
-  function Helper() {}
+var Helper = function () {
+  function Helper() { }
 
-  Helper.equals = function(x, y) {
+  Helper.equals = function (x, y) {
     var _this = this;
 
     var ok = Object.keys,
       tx = _typeof(x),
       ty = _typeof(y);
 
-    return x && y && tx === 'object' && tx === ty ? ok(x).length === ok(y).length && ok(x).every(function(key) {
+    return x && y && tx === 'object' && tx === ty ? ok(x).length === ok(y).length && ok(x).every(function (key) {
       return _this.equals(x[key], y[key]);
     }) : x === y;
   };
@@ -87,13 +87,13 @@ var Helper = function() {
   return Helper;
 }();
 
-var Shared = function() {
+var Shared = function () {
   function Shared(editor, props) {
     this.editor = editor;
     this.props = props;
   }
 
-  Shared.prototype.delegateCursor = function(position, scroll, focus) {
+  Shared.prototype.delegateCursor = function (position, scroll, focus) {
     var doc = this.editor.getDoc();
 
     if (focus) {
@@ -105,11 +105,11 @@ var Shared = function() {
     });
   };
 
-  Shared.prototype.delegateScroll = function(coordinates) {
+  Shared.prototype.delegateScroll = function (coordinates) {
     this.editor.scrollTo(coordinates.x, coordinates.y);
   };
 
-  Shared.prototype.delegateSelection = function(ranges, focus) {
+  Shared.prototype.delegateSelection = function (ranges, focus) {
     var doc = this.editor.getDoc();
     doc.setSelections(ranges);
 
@@ -118,7 +118,7 @@ var Shared = function() {
     }
   };
 
-  Shared.prototype.apply = function(props) {
+  Shared.prototype.apply = function (props) {
     if (props && props.selection && props.selection.ranges) {
       this.delegateSelection(props.selection.ranges, props.selection.focus || false);
     }
@@ -132,7 +132,7 @@ var Shared = function() {
     }
   };
 
-  Shared.prototype.applyNext = function(props, next, preserved) {
+  Shared.prototype.applyNext = function (props, next, preserved) {
     if (props && props.selection && props.selection.ranges) {
       if (next && next.selection && next.selection.ranges && !Helper.equals(props.selection.ranges, next.selection.ranges)) {
         this.delegateSelection(next.selection.ranges, next.selection.focus || false);
@@ -152,217 +152,217 @@ var Shared = function() {
     }
   };
 
-  Shared.prototype.applyUserDefined = function(props, preserved) {
+  Shared.prototype.applyUserDefined = function (props, preserved) {
     if (preserved && preserved.cursor) {
       this.delegateCursor(preserved.cursor, props.autoScroll || false, this.editor.getOption('autofocus') || false);
     }
   };
 
-  Shared.prototype.wire = function(props) {
+  Shared.prototype.wire = function (props) {
     var _this = this;
 
-    Object.keys(props || {}).filter(function(p) {
+    Object.keys(props || {}).filter(function (p) {
       return /^on/.test(p);
-    }).forEach(function(prop) {
+    }).forEach(function (prop) {
       switch (prop) {
         case 'onBlur': {
-          _this.editor.on('blur', function(cm, event) {
+          _this.editor.on('blur', function (cm, event) {
             _this.props.onBlur(_this.editor, event);
           });
         }
-        break;
+          break;
 
-      case 'onContextMenu': {
-        _this.editor.on('contextmenu', function(cm, event) {
-          _this.props.onContextMenu(_this.editor, event);
-        });
+        case 'onContextMenu': {
+          _this.editor.on('contextmenu', function (cm, event) {
+            _this.props.onContextMenu(_this.editor, event);
+          });
 
-        break;
-      }
+          break;
+        }
 
-      case 'onCopy': {
-        _this.editor.on('copy', function(cm, event) {
-          _this.props.onCopy(_this.editor, event);
-        });
+        case 'onCopy': {
+          _this.editor.on('copy', function (cm, event) {
+            _this.props.onCopy(_this.editor, event);
+          });
 
-        break;
-      }
+          break;
+        }
 
-      case 'onCursor': {
-        _this.editor.on('cursorActivity', function(cm) {
-          _this.props.onCursor(_this.editor, _this.editor.getDoc().getCursor());
-        });
-      }
-      break;
+        case 'onCursor': {
+          _this.editor.on('cursorActivity', function (cm) {
+            _this.props.onCursor(_this.editor, _this.editor.getDoc().getCursor());
+          });
+        }
+          break;
 
-      case 'onCursorActivity': {
-        _this.editor.on('cursorActivity', function(cm) {
-          _this.props.onCursorActivity(_this.editor);
-        });
-      }
-      break;
+        case 'onCursorActivity': {
+          _this.editor.on('cursorActivity', function (cm) {
+            _this.props.onCursorActivity(_this.editor);
+          });
+        }
+          break;
 
-      case 'onCut': {
-        _this.editor.on('cut', function(cm, event) {
-          _this.props.onCut(_this.editor, event);
-        });
+        case 'onCut': {
+          _this.editor.on('cut', function (cm, event) {
+            _this.props.onCut(_this.editor, event);
+          });
 
-        break;
-      }
+          break;
+        }
 
-      case 'onDblClick': {
-        _this.editor.on('dblclick', function(cm, event) {
-          _this.props.onDblClick(_this.editor, event);
-        });
+        case 'onDblClick': {
+          _this.editor.on('dblclick', function (cm, event) {
+            _this.props.onDblClick(_this.editor, event);
+          });
 
-        break;
-      }
+          break;
+        }
 
-      case 'onDragEnter': {
-        _this.editor.on('dragenter', function(cm, event) {
-          _this.props.onDragEnter(_this.editor, event);
-        });
-      }
-      break;
+        case 'onDragEnter': {
+          _this.editor.on('dragenter', function (cm, event) {
+            _this.props.onDragEnter(_this.editor, event);
+          });
+        }
+          break;
 
-      case 'onDragLeave': {
-        _this.editor.on('dragleave', function(cm, event) {
-          _this.props.onDragLeave(_this.editor, event);
-        });
+        case 'onDragLeave': {
+          _this.editor.on('dragleave', function (cm, event) {
+            _this.props.onDragLeave(_this.editor, event);
+          });
 
-        break;
-      }
+          break;
+        }
 
-      case 'onDragOver': {
-        _this.editor.on('dragover', function(cm, event) {
-          _this.props.onDragOver(_this.editor, event);
-        });
-      }
-      break;
+        case 'onDragOver': {
+          _this.editor.on('dragover', function (cm, event) {
+            _this.props.onDragOver(_this.editor, event);
+          });
+        }
+          break;
 
-      case 'onDragStart': {
-        _this.editor.on('dragstart', function(cm, event) {
-          _this.props.onDragStart(_this.editor, event);
-        });
+        case 'onDragStart': {
+          _this.editor.on('dragstart', function (cm, event) {
+            _this.props.onDragStart(_this.editor, event);
+          });
 
-        break;
-      }
+          break;
+        }
 
-      case 'onDrop': {
-        _this.editor.on('drop', function(cm, event) {
-          _this.props.onDrop(_this.editor, event);
-        });
-      }
-      break;
+        case 'onDrop': {
+          _this.editor.on('drop', function (cm, event) {
+            _this.props.onDrop(_this.editor, event);
+          });
+        }
+          break;
 
-      case 'onFocus': {
-        _this.editor.on('focus', function(cm, event) {
-          _this.props.onFocus(_this.editor, event);
-        });
-      }
-      break;
+        case 'onFocus': {
+          _this.editor.on('focus', function (cm, event) {
+            _this.props.onFocus(_this.editor, event);
+          });
+        }
+          break;
 
-      case 'onGutterClick': {
-        _this.editor.on('gutterClick', function(cm, lineNumber, gutter, event) {
-          _this.props.onGutterClick(_this.editor, lineNumber, gutter, event);
-        });
-      }
-      break;
+        case 'onGutterClick': {
+          _this.editor.on('gutterClick', function (cm, lineNumber, gutter, event) {
+            _this.props.onGutterClick(_this.editor, lineNumber, gutter, event);
+          });
+        }
+          break;
 
-      case 'onInputRead': {
-        _this.editor.on('inputRead', function(cm, EditorChangeEvent) {
-          _this.props.onInputRead(_this.editor, EditorChangeEvent);
-        });
-      }
-      break;
+        case 'onInputRead': {
+          _this.editor.on('inputRead', function (cm, EditorChangeEvent) {
+            _this.props.onInputRead(_this.editor, EditorChangeEvent);
+          });
+        }
+          break;
 
-      case 'onKeyDown': {
-        _this.editor.on('keydown', function(cm, event) {
-          _this.props.onKeyDown(_this.editor, event);
-        });
-      }
-      break;
+        case 'onKeyDown': {
+          _this.editor.on('keydown', function (cm, event) {
+            _this.props.onKeyDown(_this.editor, event);
+          });
+        }
+          break;
 
-      case 'onKeyHandled': {
-        _this.editor.on('keyHandled', function(cm, key, event) {
-          _this.props.onKeyHandled(_this.editor, key, event);
-        });
-      }
-      break;
+        case 'onKeyHandled': {
+          _this.editor.on('keyHandled', function (cm, key, event) {
+            _this.props.onKeyHandled(_this.editor, key, event);
+          });
+        }
+          break;
 
-      case 'onKeyPress': {
-        _this.editor.on('keypress', function(cm, event) {
-          _this.props.onKeyPress(_this.editor, event);
-        });
-      }
-      break;
+        case 'onKeyPress': {
+          _this.editor.on('keypress', function (cm, event) {
+            _this.props.onKeyPress(_this.editor, event);
+          });
+        }
+          break;
 
-      case 'onKeyUp': {
-        _this.editor.on('keyup', function(cm, event) {
-          _this.props.onKeyUp(_this.editor, event);
-        });
-      }
-      break;
+        case 'onKeyUp': {
+          _this.editor.on('keyup', function (cm, event) {
+            _this.props.onKeyUp(_this.editor, event);
+          });
+        }
+          break;
 
-      case 'onMouseDown': {
-        _this.editor.on('mousedown', function(cm, event) {
-          _this.props.onMouseDown(_this.editor, event);
-        });
+        case 'onMouseDown': {
+          _this.editor.on('mousedown', function (cm, event) {
+            _this.props.onMouseDown(_this.editor, event);
+          });
 
-        break;
-      }
+          break;
+        }
 
-      case 'onPaste': {
-        _this.editor.on('paste', function(cm, event) {
-          _this.props.onPaste(_this.editor, event);
-        });
+        case 'onPaste': {
+          _this.editor.on('paste', function (cm, event) {
+            _this.props.onPaste(_this.editor, event);
+          });
 
-        break;
-      }
+          break;
+        }
 
-      case 'onRenderLine': {
-        _this.editor.on('renderLine', function(cm, line, element) {
-          _this.props.onRenderLine(_this.editor, line, element);
-        });
+        case 'onRenderLine': {
+          _this.editor.on('renderLine', function (cm, line, element) {
+            _this.props.onRenderLine(_this.editor, line, element);
+          });
 
-        break;
-      }
+          break;
+        }
 
-      case 'onScroll': {
-        _this.editor.on('scroll', function(cm) {
-          _this.props.onScroll(_this.editor, _this.editor.getScrollInfo());
-        });
-      }
-      break;
+        case 'onScroll': {
+          _this.editor.on('scroll', function (cm) {
+            _this.props.onScroll(_this.editor, _this.editor.getScrollInfo());
+          });
+        }
+          break;
 
-      case 'onSelection': {
-        _this.editor.on('beforeSelectionChange', function(cm, data) {
-          _this.props.onSelection(_this.editor, data);
-        });
-      }
-      break;
+        case 'onSelection': {
+          _this.editor.on('beforeSelectionChange', function (cm, data) {
+            _this.props.onSelection(_this.editor, data);
+          });
+        }
+          break;
 
-      case 'onTouchStart': {
-        _this.editor.on('touchstart', function(cm, event) {
-          _this.props.onTouchStart(_this.editor, event);
-        });
+        case 'onTouchStart': {
+          _this.editor.on('touchstart', function (cm, event) {
+            _this.props.onTouchStart(_this.editor, event);
+          });
 
-        break;
-      }
+          break;
+        }
 
-      case 'onUpdate': {
-        _this.editor.on('update', function(cm) {
-          _this.props.onUpdate(_this.editor);
-        });
-      }
-      break;
+        case 'onUpdate': {
+          _this.editor.on('update', function (cm) {
+            _this.props.onUpdate(_this.editor);
+          });
+        }
+          break;
 
-      case 'onViewportChange': {
-        _this.editor.on('viewportChange', function(cm, from, to) {
-          _this.props.onViewportChange(_this.editor, from, to);
-        });
-      }
-      break;
+        case 'onViewportChange': {
+          _this.editor.on('viewportChange', function (cm, from, to) {
+            _this.props.onViewportChange(_this.editor, from, to);
+          });
+        }
+          break;
       }
     });
   };
@@ -370,7 +370,7 @@ var Shared = function() {
   return Shared;
 }();
 
-var Controlled = function(_super) {
+var Controlled = function (_super) {
   __extends(Controlled, _super);
 
   function Controlled(props) {
@@ -384,7 +384,7 @@ var Controlled = function(_super) {
     _this.emulating = false;
     _this.hydrated = false;
 
-    _this.initCb = function() {
+    _this.initCb = function () {
       if (_this.props.editorDidConfigure) {
         _this.props.editorDidConfigure(_this.editor);
       }
@@ -394,19 +394,19 @@ var Controlled = function(_super) {
     return _this;
   }
 
-  Controlled.prototype.hydrate = function(props) {
+  Controlled.prototype.hydrate = function (props) {
     var _this = this;
 
     var _options = props && props.options ? props.options : {};
 
     var userDefinedOptions = _extends({}, cm.defaults, this.editor.options, _options);
 
-    var optionDelta = Object.keys(userDefinedOptions).some(function(key) {
+    var optionDelta = Object.keys(userDefinedOptions).some(function (key) {
       return _this.editor.getOption(key) !== userDefinedOptions[key];
     });
 
     if (optionDelta) {
-      Object.keys(userDefinedOptions).forEach(function(key) {
+      Object.keys(userDefinedOptions).forEach(function (key) {
         if (_options.hasOwnProperty(key)) {
           if (_this.editor.getOption(key) !== userDefinedOptions[key]) {
             _this.editor.setOption(key, userDefinedOptions[key]);
@@ -424,7 +424,7 @@ var Controlled = function(_super) {
     this.hydrated = true;
   };
 
-  Controlled.prototype.initChange = function(value) {
+  Controlled.prototype.initChange = function (value) {
     this.emulating = true;
     var doc = this.editor.getDoc();
     var lastLine = doc.lastLine();
@@ -442,7 +442,7 @@ var Controlled = function(_super) {
     this.emulating = false;
   };
 
-  Controlled.prototype.resolveChange = function() {
+  Controlled.prototype.resolveChange = function () {
     this.emulating = true;
     var doc = this.editor.getDoc();
 
@@ -458,7 +458,7 @@ var Controlled = function(_super) {
     this.deferred = null;
   };
 
-  Controlled.prototype.mirrorChange = function(deferred) {
+  Controlled.prototype.mirrorChange = function (deferred) {
     var doc = this.editor.getDoc();
 
     if (deferred.origin === 'undo') {
@@ -474,7 +474,7 @@ var Controlled = function(_super) {
     return this.mirror.getValue();
   };
 
-  Controlled.prototype.componentDidMount = function() {
+  Controlled.prototype.componentDidMount = function () {
     var _this = this;
 
     if (SERVER_RENDERED) return;
@@ -484,17 +484,22 @@ var Controlled = function(_super) {
         cm.defineMode(this.props.defineMode.name, this.props.defineMode.fn);
       }
     }
+    if (this.props.defineSimpleMode) {
+      if (this.props.defineSimpleMode.name && this.props.defineSimpleMode.states) {
+        cm.defineSimpleMode(this.props.defineSimpleMode.name, this.props.defineSimpleMode.states);
+      }
+    }
 
     this.editor = cm(this.ref);
     this.shared = new Shared(this.editor, this.props);
-    this.mirror = cm(function() {});
-    this.editor.on('electricInput', function() {
+    this.mirror = cm(function () { });
+    this.editor.on('electricInput', function () {
       _this.mirror.setHistory(_this.editor.getDoc().getHistory());
     });
-    this.editor.on('cursorActivity', function() {
+    this.editor.on('cursorActivity', function () {
       _this.mirror.setCursor(_this.editor.getDoc().getCursor());
     });
-    this.editor.on('beforeChange', function(cm, data) {
+    this.editor.on('beforeChange', function (cm, data) {
       if (_this.emulating) {
         return;
       }
@@ -506,7 +511,7 @@ var Controlled = function(_super) {
 
       if (_this.props.onBeforeChange) _this.props.onBeforeChange(_this.editor, _this.deferred, phantomChange);
     });
-    this.editor.on('change', function(cm, data) {
+    this.editor.on('change', function (cm, data) {
       if (!_this.mounted) {
         return;
       }
@@ -530,7 +535,7 @@ var Controlled = function(_super) {
     }
   };
 
-  Controlled.prototype.componentDidUpdate = function(prevProps) {
+  Controlled.prototype.componentDidUpdate = function (prevProps) {
     if (SERVER_RENDERED) return;
     var preserved = {
       cursor: null
@@ -555,7 +560,7 @@ var Controlled = function(_super) {
     this.appliedUserDefined = true;
   };
 
-  Controlled.prototype.componentWillUnmount = function() {
+  Controlled.prototype.componentWillUnmount = function () {
     if (SERVER_RENDERED) return;
 
     if (this.props.editorWillUnmount) {
@@ -563,11 +568,11 @@ var Controlled = function(_super) {
     }
   };
 
-  Controlled.prototype.shouldComponentUpdate = function(nextProps, nextState) {
+  Controlled.prototype.shouldComponentUpdate = function (nextProps, nextState) {
     return !SERVER_RENDERED;
   };
 
-  Controlled.prototype.render = function() {
+  Controlled.prototype.render = function () {
     var _this = this;
 
     if (SERVER_RENDERED) return null;
@@ -585,7 +590,7 @@ var Controlled = function(_super) {
 
 exports.Controlled = Controlled;
 
-var UnControlled = function(_super) {
+var UnControlled = function (_super) {
   __extends(UnControlled, _super);
 
   function UnControlled(props) {
@@ -598,7 +603,7 @@ var UnControlled = function(_super) {
     _this.detached = false;
     _this.hydrated = false;
 
-    _this.initCb = function() {
+    _this.initCb = function () {
       if (_this.props.editorDidConfigure) {
         _this.props.editorDidConfigure(_this.editor);
       }
@@ -606,26 +611,26 @@ var UnControlled = function(_super) {
 
     _this.mounted = false;
 
-    _this.onBeforeChangeCb = function() {
+    _this.onBeforeChangeCb = function () {
       _this.continueChange = true;
     };
 
     return _this;
   }
 
-  UnControlled.prototype.hydrate = function(props) {
+  UnControlled.prototype.hydrate = function (props) {
     var _this = this;
 
     var _options = props && props.options ? props.options : {};
 
     var userDefinedOptions = _extends({}, cm.defaults, this.editor.options, _options);
 
-    var optionDelta = Object.keys(userDefinedOptions).some(function(key) {
+    var optionDelta = Object.keys(userDefinedOptions).some(function (key) {
       return _this.editor.getOption(key) !== userDefinedOptions[key];
     });
 
     if (optionDelta) {
-      Object.keys(userDefinedOptions).forEach(function(key) {
+      Object.keys(userDefinedOptions).forEach(function (key) {
         if (_options.hasOwnProperty(key)) {
           if (_this.editor.getOption(key) !== userDefinedOptions[key]) {
             _this.editor.setOption(key, userDefinedOptions[key]);
@@ -650,7 +655,7 @@ var UnControlled = function(_super) {
     this.hydrated = true;
   };
 
-  UnControlled.prototype.componentDidMount = function() {
+  UnControlled.prototype.componentDidMount = function () {
     var _this = this;
 
     if (SERVER_RENDERED) return;
@@ -661,15 +666,20 @@ var UnControlled = function(_super) {
         cm.defineMode(this.props.defineMode.name, this.props.defineMode.fn);
       }
     }
+    if (this.props.defineSimpleMode) {
+      if (this.props.defineSimpleMode.name && this.props.defineSimpleMode.states) {
+        cm.defineSimpleMode(this.props.defineSimpleMode.name, this.props.defineSimpleMode.states);
+      }
+    }
 
     this.editor = cm(this.ref);
     this.shared = new Shared(this.editor, this.props);
-    this.editor.on('beforeChange', function(cm, data) {
+    this.editor.on('beforeChange', function (cm, data) {
       if (_this.props.onBeforeChange) {
         _this.props.onBeforeChange(_this.editor, data, _this.editor.getValue(), _this.onBeforeChangeCb);
       }
     });
-    this.editor.on('change', function(cm, data) {
+    this.editor.on('change', function (cm, data) {
       if (!_this.mounted || !_this.props.onChange) {
         return;
       }
@@ -694,7 +704,7 @@ var UnControlled = function(_super) {
     }
   };
 
-  UnControlled.prototype.componentDidUpdate = function(prevProps) {
+  UnControlled.prototype.componentDidUpdate = function (prevProps) {
     if (this.detached && this.props.detach === false) {
       this.detached = false;
 
@@ -739,7 +749,7 @@ var UnControlled = function(_super) {
     }
   };
 
-  UnControlled.prototype.componentWillUnmount = function() {
+  UnControlled.prototype.componentWillUnmount = function () {
     if (SERVER_RENDERED) return;
 
     if (this.props.editorWillUnmount) {
@@ -747,14 +757,14 @@ var UnControlled = function(_super) {
     }
   };
 
-  UnControlled.prototype.shouldComponentUpdate = function(nextProps, nextState) {
+  UnControlled.prototype.shouldComponentUpdate = function (nextProps, nextState) {
     var update = true;
     if (SERVER_RENDERED) update = false;
     if (this.detached && nextProps.detach) update = false;
     return update;
   };
 
-  UnControlled.prototype.render = function() {
+  UnControlled.prototype.render = function () {
     var _this = this;
 
     if (SERVER_RENDERED) return null;

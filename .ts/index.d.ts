@@ -4,6 +4,10 @@ export interface IDefineModeOptions {
     fn: () => codemirror.Mode<any>;
     name: string;
 }
+export interface IDefineSimpleModeOptions {
+    states: object;
+    name: string;
+}
 export interface ISetScrollOptions {
     x?: number | null;
     y?: number | null;
@@ -27,6 +31,7 @@ export interface ICodeMirror {
     className?: string;
     cursor?: codemirror.Position;
     defineMode?: IDefineModeOptions;
+    defineSimpleMode?: IDefineSimpleModeOptions;
     editorDidConfigure?: (editor: codemirror.Editor) => void;
     editorDidMount?: (editor: codemirror.Editor, value: string, cb: () => void) => void;
     editorWillUnmount?: (lib: any) => void;
